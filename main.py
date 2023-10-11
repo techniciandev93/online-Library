@@ -61,6 +61,8 @@ def download_book(path):
             h1 = soup.find('div', id='content').find('h1')
             title = h1.text.split('::')[0].strip()
             author = h1.a.text
+            find_comments = soup.find_all('div', class_='texts')
+            comments = '\n'.join([comment.span.text for comment in find_comments])
 
             download_txt(txt_url, f'{book_id}. {title}', path)
             download_image(full_img_url, folder='images/')
@@ -70,7 +72,3 @@ def download_book(path):
 
 if __name__ == '__main__':
     download_book('books/')
-
-
-
-
