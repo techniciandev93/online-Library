@@ -64,6 +64,8 @@ def download_book(path):
             find_comments = soup.find_all('div', class_='texts')
             comments = '\n'.join([comment.span.text for comment in find_comments])
 
+            genres = [genre.text for genre in soup.find('span', class_='d_book').find_all('a')]
+
             download_txt(txt_url, f'{book_id}. {title}', path)
             download_image(full_img_url, folder='images/')
         except requests.HTTPError:
