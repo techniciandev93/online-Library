@@ -1,3 +1,4 @@
+import argparse
 import os
 from pathlib import Path
 import requests
@@ -67,9 +68,9 @@ def parse_book_page(html):
     return book_page
 
 
-def download_book(path):
+def download_book(start_id, end_id):
     tululu_url = 'https://tululu.org/b{}/'
-    for book_id in range(1, 11):
+    for book_id in range(start_id, end_id+1):
         try:
             response = requests.get(tululu_url.format(book_id), verify=False)
             response.raise_for_status()
@@ -77,11 +78,22 @@ def download_book(path):
             txt_url = f'https://tululu.org/txt.php?id={book_id}'
             book_page = parse_book_page(response.text)
 
-            download_txt(txt_url, f"{book_id}. {book_page['title']}", path)
-            download_image(book_page['full_img_url'], folder='images/')
+            download_txt(txt_url, f"{book_id}. {book_page['title']}")
+            download_image(book_page['full_img_url'])
         except requests.HTTPError:
             continue
 
 
 if __name__ == '__main__':
-    download_book('books/')
+    parser = argparse.ArgumentParser(description="Этот скрипт предназначен для скачивания книг и обложек "
+                                                 "в заданном диапазоне с сайта tululu.org. Книги будут скачиваться в "
+                                                 "каталог books/, обложки в images/. Запустите скрипт, "
+                                                 "указав диапазон ID. python main.py -s 1 -e 10."
+                                                 "По умолчанию без аргументов будет поиск в диапазоне от 1 до 10 "
+                                                 "python main.py")
+    parser.add_argument('-s', '--start_id', type=str, help="Введите ID книги для начала диапазона",
+                        nargs='*', default=1)
+    parser.add_argument('-e', '--end_id', type=str, help="Введите ID книги для конца диапазона",
+                        nargs='*', default=10)
+    args = parser.parse_args()
+    download_book(args.start_id, args.end_id)
