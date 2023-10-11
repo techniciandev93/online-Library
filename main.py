@@ -45,6 +45,28 @@ def download_file(url, folder, file_name):
     return full_path
 
 
+def parse_book_page(html):
+    soup = BeautifulSoup(html, 'lxml')
+    img_url = soup.find('div', class_='bookimage').a.img['src']
+    full_img_url = urljoin('https://tululu.org', img_url)
+
+    h1 = soup.find('div', id='content').find('h1')
+    title = h1.text.split('::')[0].strip()
+    author = h1.a.text
+    find_comments = soup.find_all('div', class_='texts')
+    comments = '\n'.join([comment.span.text for comment in find_comments])
+    genres = [genre.text for genre in soup.find('span', class_='d_book').find_all('a')]
+    content = soup.find_all('table', class_='d_book')[-1].text
+
+    book_page = {'content': content,
+                 'full_img_url': full_img_url,
+                 'genres': genres,
+                 'comments': comments,
+                 'author': author,
+                 'title': title}
+    return book_page
+
+
 def download_book(path):
     tululu_url = 'https://tululu.org/b{}/'
     for book_id in range(1, 11):
@@ -53,21 +75,10 @@ def download_book(path):
             response.raise_for_status()
             check_for_redirect(response)
             txt_url = f'https://tululu.org/txt.php?id={book_id}'
+            book_page = parse_book_page(response.text)
 
-            soup = BeautifulSoup(response.text, 'lxml')
-            img_url = soup.find('div', class_='bookimage').a.img['src']
-            full_img_url = urljoin('https://tululu.org', img_url)
-
-            h1 = soup.find('div', id='content').find('h1')
-            title = h1.text.split('::')[0].strip()
-            author = h1.a.text
-            find_comments = soup.find_all('div', class_='texts')
-            comments = '\n'.join([comment.span.text for comment in find_comments])
-
-            genres = [genre.text for genre in soup.find('span', class_='d_book').find_all('a')]
-
-            download_txt(txt_url, f'{book_id}. {title}', path)
-            download_image(full_img_url, folder='images/')
+            download_txt(txt_url, f"{book_id}. {book_page['title']}", path)
+            download_image(book_page['full_img_url'], folder='images/')
         except requests.HTTPError:
             continue
 
