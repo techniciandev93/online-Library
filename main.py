@@ -57,7 +57,7 @@ def parse_book_page(html, url):
     title = h1.text.split('::')[0].strip()
     author = h1.a.text
     soup_comments = soup.find_all('div', class_='texts')
-    comments = '\n'.join([comment.span.text for comment in soup_comments])
+    comments = [comment.span.text for comment in soup_comments]
     genres = [genre.text for genre in soup.find('span', class_='d_book').find_all('a')]
     book_description = soup.find_all('table', class_='d_book')[-1].text
 
