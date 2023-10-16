@@ -3,7 +3,6 @@ import re
 from urllib.parse import urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
-
 from main import check_for_redirect, parse_book_page, download_txt, download_image
 
 requests.packages.urllib3.disable_warnings()
@@ -19,7 +18,7 @@ def parse_category(start_page, end_page):
         check_for_redirect(response)
 
         soup = BeautifulSoup(response.text, 'lxml')
-        books = soup.find_all('table', class_='d_book')
+        books = soup.select('#content .d_book')
         book_urls = [urljoin(response.url, book.a['href']) for book in books]
 
         for book_url in book_urls:
