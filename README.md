@@ -8,7 +8,7 @@ Python 3.8 должен быть уже установлен.
 pip install -r requirements.txt
 ```
 
-## main.py
+## download_tululu_books.py
 Этот скрипт предназначен для скачивания книг и обложек
 в заданном диапазоне с сайта [tululu.org](https://tululu.org/). Книги будут скачиваться в
 каталог books/, обложки в images/.
@@ -16,11 +16,11 @@ pip install -r requirements.txt
 ### Как запустить
 Запустите скрипт, указав диапазон ID
 ```
-python main.py -s 5 -e 10
+python download_tululu_books.py -s 5 -e 10
 ```
 По умолчанию без аргументов будет поиск в диапазоне от 1 до 10
 ```
-python main.py
+python download_tululu_books.py
 ```
 ## parse_tululu_category.py
 Этот скрипт предназначен для скачивания книг и обложек в жанре фантастика

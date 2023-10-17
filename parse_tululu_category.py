@@ -8,13 +8,13 @@ from pathlib import Path
 from urllib.parse import urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
-from main import check_for_redirect, parse_book_page, download_txt, download_image
+from download_tululu_books import check_for_redirect, parse_book_page, download_txt, download_image
 
 requests.packages.urllib3.disable_warnings()
 
 
 def parse_category(start_page, end_page, skip_imgs, skip_txt, dest_folder):
-    info_books = []
+    books = []
     category_url = 'https://tululu.org/l55/'
     while start_page != end_page:
         try:
@@ -24,13 +24,14 @@ def parse_category(start_page, end_page, skip_imgs, skip_txt, dest_folder):
             check_for_redirect(response)
 
             soup = BeautifulSoup(response.text, 'lxml')
-            books = soup.select('#content .d_book')
-            book_urls = [urljoin(response.url, book.a['href']) for book in books]
+            soup_books = soup.select('#content .d_book')
+            book_urls = [urljoin(response.url, book.a['href']) for book in soup_books]
 
             for book_url in book_urls:
                 while True:
                     try:
-                        download_book(book_url, info_books, skip_imgs, skip_txt, dest_folder)
+                        book = download_book(book_url, skip_imgs, skip_txt, dest_folder)
+                        books.append(book)
                         break
                     except requests.HTTPError:
                         traceback.print_exc()
@@ -44,20 +45,19 @@ def parse_category(start_page, end_page, skip_imgs, skip_txt, dest_folder):
             traceback.print_exc()
             time.sleep(10)
         except requests.HTTPError:
+            traceback.print_exc()
             break
 
     file_path = os.path.join(dest_folder, 'books.json')
     Path(dest_folder).mkdir(parents=True, exist_ok=True)
-    info_books_json = json.dumps(info_books, ensure_ascii=False)
     with open(file_path, 'w') as file:
-        file.write(info_books_json)
+        json.dump(books, file, ensure_ascii=False)
 
 
-def download_book(url, books, skip_imgs, skip_txt, dest_folder):
+def download_book(url, skip_imgs, skip_txt, dest_folder):
     response = requests.get(url, verify=False)
     response.raise_for_status()
     check_for_redirect(response)
-    print(response.url)
 
     txt_url = f'https://tululu.org/txt.php'
     book_page = parse_book_page(response.text, response.url)
@@ -68,19 +68,20 @@ def download_book(url, books, skip_imgs, skip_txt, dest_folder):
 
     image_path = ''
     book_path = ''
-    if skip_txt:
+    if not skip_txt:
         book_path = download_txt(txt_url, f'{book_page["title"]}.txt', params, dest_folder=dest_folder)
-    if skip_imgs:
+    if not skip_imgs:
         image_path = download_image(book_page['full_img_url'], dest_folder=dest_folder)
 
-    books.append({
+    book = {
         'title': book_page['title'],
         'author': book_page['author'],
         'img_src': image_path,
         'book_path': book_path,
         'comments': book_page['comments'],
         'genres': book_page['genres']
-    })
+    }
+    return book
 
 
 if __name__ == "__main__":
@@ -98,7 +99,7 @@ if __name__ == "__main__":
     parser.add_argument('--end_page', type=int, help="Введите номер страницы для конца диапазона", default=0)
     parser.add_argument('--dest_folder', type=str, help="Путь к каталогу с результатами парсинга: картинкам, книгам, "
                                                         "JSON.", default='')
-    parser.add_argument('--skip_imgs', action='store_false', help="Не скачивать картинки")
-    parser.add_argument('--skip_txt', action='store_false', help="Не скачивать книги")
+    parser.add_argument('--skip_imgs', action='store_true', help="Не скачивать картинки")
+    parser.add_argument('--skip_txt', action='store_true', help="Не скачивать книги")
     args = parser.parse_args()
     parse_category(args.start_page, args.end_page, args.skip_imgs, args.skip_txt, args.dest_folder)

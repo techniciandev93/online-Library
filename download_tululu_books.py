@@ -100,9 +100,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Этот скрипт предназначен для скачивания книг и обложек "
                                                  "в заданном диапазоне с сайта tululu.org. Книги будут скачиваться в "
                                                  "каталог books/, обложки в images/. Запустите скрипт, "
-                                                 "указав диапазон ID. python main.py -s 1 -e 10."
+                                                 "указав диапазон ID. python download_tululu_books.py -s 1 -e 10."
                                                  "По умолчанию без аргументов будет поиск в диапазоне от 1 до 10 "
-                                                 "python main.py")
+                                                 "python download_tululu_books.py")
     parser.add_argument('-s', '--start_id', type=int, help="Введите ID книги для начала диапазона", default=1)
     parser.add_argument('-e', '--end_id', type=int, help="Введите ID книги для конца диапазона", default=10)
     args = parser.parse_args()
