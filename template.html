@@ -13,6 +13,29 @@
 </head>
 <body>
     <div class="container">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if previous %}
+                    <li class="page-item"><a class="page-link" href="/{{previous_url}}">Назад</a></li>
+                {% else %}
+                     <li class="page-item disabled"><a class="page-link">Назад</a></li>
+                {% endif %}
+
+                {% for page in paginator %}
+                    {% if current_page == page %}
+                        <li class="page-item active"><a class="page-link" href="/{{paginator[page]}}">{{page}}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="/{{paginator[page]}}">{{page}}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if next_page %}
+                    <li class="page-item"><a class="page-link" href="/{{next_url}}">Вперёд</a></li>
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link">Вперёд</a></li>
+                {% endif %}
+            </ul>
+        </nav>
         <div class="row justify-content-between">
             {% for book in books %}
                 <div class="card col-6 mb-3" style="max-width: 540px;">
