@@ -13,8 +13,8 @@
 </head>
 <body>
     <div class="container">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
+        <nav aria-label="Page navigation">
+            <ul class="m-4 pagination justify-content-center">
                 {% if previous %}
                     <li class="page-item"><a class="page-link" href="/{{previous_url}}">Назад</a></li>
                 {% else %}
@@ -47,6 +47,15 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{book['title']}}</h5>
                                 <p class="card-text">{{book['author']}}</p>
+                                <div class="container">
+                                    <div class="row">
+                                        {% for genre in book['genres'] %}
+                                            <div class="col-6">
+                                                <span class="badge badge-light">{{genre}}</span>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
                                 <a href="/{{book['book_path']}}" target="_blank" rel="noopener noreferrer">Читать</a>
                             </div>
                         </div>
