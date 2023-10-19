@@ -55,8 +55,9 @@ def on_reload(json_path, template_path, pages_path):
         )
         with open(file_path, 'w', encoding='utf8') as file:
             file.write(rendered_page)
-        with open('index.html', 'w', encoding='utf8') as file:
-            file.write(rendered_page)
+        if page == 1:
+            with open(os.path.join(pages_path, 'index.html'), 'w', encoding='utf8') as file:
+                file.write(rendered_page)
 
 
 if __name__ == '__main__':
