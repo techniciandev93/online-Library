@@ -2,12 +2,10 @@
 __pycache__/
 *.py[cod]
 *$py.class
-index.html
 # C extensions
 *.json
 *.so
 books/
-pages/
 images/
 txt/
 .idea/

@@ -55,13 +55,15 @@ def on_reload(json_path, template_path, pages_path):
         )
         with open(file_path, 'w', encoding='utf8') as file:
             file.write(rendered_page)
+        with open('index.html', 'w', encoding='utf8') as file:
+            file.write(rendered_page)
 
 
 if __name__ == '__main__':
     json_path = 'books.json'
     template_path = 'template.html'
     pages_path = 'pages'
-    default_html = os.path.join(pages_path, 'index1.html')
+    default_html = os.path.join(pages_path, 'index.html')
 
     on_reload_with_args = partial(on_reload, json_path, template_path, pages_path)
 
