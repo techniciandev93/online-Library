@@ -14,13 +14,13 @@ def read_json_books(path):
     return books
 
 
-def on_reload(json_path, template_path, pages_path):
+def on_reload(json_path, template_path, pages_path, default_html, book_count_page):
     env = Environment(
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
     )
     template = env.get_template(template_path)
-    books = list(chunked(read_json_books(json_path), 4))
+    books = list(chunked(read_json_books(json_path), book_count_page))
     count_pages = len(books)
     Path(pages_path).mkdir(parents=True, exist_ok=True)
     paginator = {page: os.path.join(pages_path, f'index{page}.html') for page in range(1, count_pages+1)}
@@ -56,7 +56,7 @@ def on_reload(json_path, template_path, pages_path):
         with open(file_path, 'w', encoding='utf8') as file:
             file.write(rendered_page)
         if page == 1:
-            with open(os.path.join(pages_path, 'index.html'), 'w', encoding='utf8') as file:
+            with open(default_html, 'w', encoding='utf8') as file:
                 file.write(rendered_page)
 
 
@@ -64,9 +64,10 @@ if __name__ == '__main__':
     json_path = 'books.json'
     template_path = 'template.html'
     pages_path = 'pages'
-    default_html = os.path.join(pages_path, 'index.html')
+    default_html = 'index.html'
+    book_count_page = 4
 
-    on_reload_with_args = partial(on_reload, json_path, template_path, pages_path)
+    on_reload_with_args = partial(on_reload, json_path, template_path, pages_path, default_html, book_count_page)
 
     on_reload_with_args()
     server = Server()
