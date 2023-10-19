@@ -64,7 +64,7 @@ if __name__ == '__main__':
     json_path = 'books.json'
     template_path = 'template.html'
     pages_path = 'pages'
-    default_html = 'index.html'
+    default_html = os.path.join(pages_path, 'index.html')
     book_count_page = 4
 
     on_reload_with_args = partial(on_reload, json_path, template_path, pages_path, default_html, book_count_page)
