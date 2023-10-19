@@ -17,21 +17,21 @@
         <nav aria-label="Page navigation">
             <ul class="m-4 pagination justify-content-center">
                 {% if previous %}
-                    <li class="page-item"><a class="page-link" href="/{{previous_url}}">Назад</a></li>
+                    <li class="page-item"><a class="page-link" href="../{{previous_url}}">Назад</a></li>
                 {% else %}
                      <li class="page-item disabled"><a class="page-link">Назад</a></li>
                 {% endif %}
 
                 {% for page in paginator %}
                     {% if current_page == page %}
-                        <li class="page-item active"><a class="page-link" href="/{{paginator[page]}}">{{page}}</a></li>
+                        <li class="page-item active"><a class="page-link" href="../{{paginator[page]}}">{{page}}</a></li>
                     {% else %}
-                        <li class="page-item"><a class="page-link" href="/{{paginator[page]}}">{{page}}</a></li>
+                        <li class="page-item"><a class="page-link" href="../{{paginator[page]}}">{{page}}</a></li>
                     {% endif %}
                 {% endfor %}
 
                 {% if next_page %}
-                    <li class="page-item"><a class="page-link" href="/{{next_url}}">Вперёд</a></li>
+                    <li class="page-item"><a class="page-link" href="../{{next_url}}">Вперёд</a></li>
                 {% else %}
                     <li class="page-item disabled"><a class="page-link">Вперёд</a></li>
                 {% endif %}
@@ -42,7 +42,7 @@
                 <div class="card col-6 mb-3" style="max-width: 540px;">
                     <div class="row no-gutters">
                         <div class="col-md-4">
-                            <img src="/{{book['img_src']}}" class="card-img" alt="{{book['title']}}">
+                            <img src="../{{book['img_src']}}" class="card-img" alt="{{book['title']}}">
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
@@ -57,7 +57,7 @@
                                         {% endfor %}
                                     </div>
                                 </div>
-                                <a href="/{{book['book_path']}}" target="_blank" rel="noopener noreferrer">Читать</a>
+                                <a href="../{{book['book_path']}}" target="_blank" rel="noopener noreferrer">Читать</a>
                             </div>
                         </div>
                     </div>
