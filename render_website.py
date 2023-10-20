@@ -79,7 +79,6 @@ if __name__ == '__main__':
     default_html = os.path.join(args.pages_path, 'index.html')
     on_reload_with_args = partial(on_reload,
                                   args.json_path,
-                                  args.json_path,
                                   args.template_path,
                                   args.pages_path,
                                   default_html,
