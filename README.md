@@ -51,7 +51,7 @@ python parse_tululu_category.py --start_page 1 --end_page 4
 ```
 python render_website.py
 ```
-и перейдите по ссылке http://127.0.0.1:5500.\
+и перейдите по ссылке http://127.0.0.1:5500 \
 Для просмотра параметров используйте
 ```
 python render_website.py --help
