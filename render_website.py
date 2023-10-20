@@ -64,8 +64,8 @@ def on_reload(json_path, template_path, pages_path, default_html, books_per_page
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Этот скрипт запускает веб приложение онлайн библиотеки. Запустите "
                                                  "python render_website.py и перейдите по ссылке "
-                                                 "http://127.0.0.1:5500. Чтобы сформировать json  с книгами запустите "
-                                                 "скрипт python parse_tululu_category.py --start_page 1 --end_page 4 "
+                                                 "http://127.0.0.1:5500. Для рендеринга используется json файл с "
+                                                 "книгами - books.json"
                                                  "Для просмотра параметров используйте python render_website.py --help")
 
     parser.add_argument('--json_path', type=str, help="Укажите путь к json файлу с книгами", default='books.json')
