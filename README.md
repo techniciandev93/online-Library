@@ -43,10 +43,6 @@ python parse_tululu_category.py --help
 ## render_website.py
 Этот скрипт запускает веб приложение онлайн библиотеки. 
 ### Как запустить
-Чтобы сформировать json  с книгами запустите скрипт
-```
-python parse_tululu_category.py --start_page 1 --end_page 4 
-```
 Запустите
 ```
 python render_website.py
@@ -56,6 +52,7 @@ python render_website.py
 ```
 python render_website.py --help
 ```
-Пример библиотеки можно посмотреть по ссылке https://techniciandev93.github.io/online-Library/pages/ 
+Для рендеринга используется json файл с книгами - books.json \
+Публичную онлайн версию – GitHub Pages можно посмотреть по ссылке https://techniciandev93.github.io/online-Library/pages/ 
 
 Код написан в образовательных целях на онлайн-курсе для веб-разработчиков [dvmn.org](https://dvmn.org/).
