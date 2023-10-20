@@ -9,7 +9,7 @@ from more_itertools import chunked
 
 
 def read_json_books(path):
-    with open(path, "r") as file:
+    with open(path, "r", encoding="utf8") as file:
         books_json = file.read()
     books = json.loads(books_json)
     return books
